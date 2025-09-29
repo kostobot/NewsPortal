@@ -1,0 +1,76 @@
+1. Создаю двух пользователей в таблице User:
+User.objects.create_user('Константин')
+User.objects.create_user('Евгения')
+
+2. Создать два объекта модели Author, связанные с пользователями.
+from blog.models import Author
+
+user1 = User.objects.get(username='Константин')
+user2 = User.objects.get(username='Евгения')
+
+author1 = Author.objects.create(user=user1)
+author2 = Author.objects.create(user=user2)
+
+3. Добавляю 4 категории в модель Category.
+from blog.models import Category
+
+cat1 = Category.objects.create(name='Политика')
+cat2 = Category.objects.create(name='Экономика')
+cat3 = Category.objects.create(name='Спорт')
+cat4 = Category.objects.create(name='Технологии')
+
+4. Добавляю две статьи и одну новость
+from blog.models import Post
+
+post1 = Post.objects.create(author=author1, post_type=Post.ARTICLE, title='Статья о политике', text='Текст статьи о политике...')
+post2 = Post.objects.create(author=author2, post_type=Post.ARTICLE, title='Экономическая статья', text='Текст статьи про экономику...')
+post3 = Post.objects.create(author=author1, post_type=Post.NEWS, title='Новость дня', text='Текст новости...')
+
+5. Присваиваю им категории (как минимум в одной статье/новости должно быть не меньше 2 категорий).
+post1.category.add(cat1, cat3)
+post2.category.add(cat2)
+post3.category.add(cat4)
+
+6. Создаю минимум 4 комментария к разным постам (в каждом — хотя бы 1 комментарий)
+from blog.models import Comment
+
+Comment.objects.create(post=post1, user=user2, text='Интересная статья!')
+Comment.objects.create(post=post1, user=user1, text='Спасибо за комментарий!')
+Comment.objects.create(post=post2, user=user1, text='Полезно для понимания экономики.')
+Comment.objects.create(post=post3, user=user2, text='Спасибо за новость.')
+
+7. Применяю like() и dislike() к статьям, новостям и комментариям
+post1.like()
+post1.like()
+post2.like()
+post3.dislike()
+
+comment1 = Comment.objects.filter(post=post1).first()
+comment1.like()
+
+comment2 = Comment.objects.filter(post=post1).last()
+comment2.dislike()
+
+comment3 = Comment.objects.filter(post=post2).first()
+comment3.like()
+
+comment4 = Comment.objects.filter(post=post3).first()
+comment4.like()
+
+8. Обновляю рейтинги авторов
+author1.update_rating()
+author2.update_rating()
+
+9. Вывожу username и рейтинг лучшего пользователя (сортировка)
+best_author = Author.objects.order_by('-rating').first()
+print(best_author.user.username, best_author.rating)
+
+10. Вывожу дату добавления, username автора, рейтинг, заголовок и превью лучшей статьи
+best_post = Post.objects.filter(post_type=Post.ARTICLE).order_by('-rating').first()
+print(best_post.date_time, best_post.author.user.username, best_post.rating, best_post.title, best_post.preview())
+
+11. Вывожу все комментарии к этой статье (дата, пользователь, рейтинг, текст)
+comments = best_post.comments.all()
+
+for comment in comments:
+    print(comment.date_time, comment.user.username, comment.rating, comment.text)
