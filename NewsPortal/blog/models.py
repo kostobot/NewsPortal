@@ -22,7 +22,7 @@ class Author(models.Model):
         print(f"Рейтинг = 3 * {posts_rating} + {comments_rating} = {self.rating}")
 
 class Category(models.Model):
-    name = models.CharField(unique=True)
+    name = models.CharField(unique=True, max_length=128)
 
     def __repr__(self):
         return f"Category (name='{self.name}')"
@@ -45,6 +45,7 @@ class Post(models.Model):
     title = models.CharField(max_length=128)
     text = models.TextField()
     rating = models.SmallIntegerField(default=0)
+    url_img = models.URLField(blank=True)
 
     def like(self):
         self.rating += 1
@@ -59,6 +60,9 @@ class Post(models.Model):
     
     def get_absolute_url(self):
         return reverse('post_detail', args=[str(self.id)])
+    
+    def __str__(self):
+        return f'{self.title}'
 
 class PostCategory(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
