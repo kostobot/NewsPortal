@@ -1,13 +1,16 @@
 {% extends 'flatpages/default.html' %}
+{% load custom_filters %}
 
 {% block title %}
 Post
 {% endblock title %}
 {% block content %}
+<h2>{{post.date_time|date:'d.m.y'}}</h2>
+<br>
 <h2>{{post}}</h2>
 <hr>
-<img src="{{post.url_img}}" alt="Описание картинки"></a>
+<img src="{{post.url_img}}" alt="Описание картинки" style="box-shadow: 0px 0px 20px rgba(0, 0, 0, 1.5);"></a>
 <br>
 <br>
-{{post.text}}
+<div style="text-align: left;">{{post.text|censor}}</div>
 {% endblock content %}

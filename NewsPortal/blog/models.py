@@ -42,10 +42,10 @@ class Post(models.Model):
     post_type = models.CharField(max_length=2, choices=CATEGORY_CHOICES, default=ARTICLE)
     date_time = models.DateTimeField(auto_now_add=True)
     category = models.ManyToManyField(Category, through='PostCategory')
-    title = models.CharField(max_length=128)
+    title = models.CharField(max_length=500)
     text = models.TextField()
     rating = models.SmallIntegerField(default=0)
-    url_img = models.URLField(blank=True)
+    url_img = models.URLField(blank=True, max_length=500)
 
     def like(self):
         self.rating += 1
