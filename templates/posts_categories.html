@@ -1,0 +1,51 @@
+{% extends 'flatpages/default.html' %}
+
+{% block content %}
+<title>🧭 Категории новостей</title>
+
+<style>
+  .categories-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 50px;
+  }
+
+  .category-item {
+    background-color: #f7f7f7;
+    border-radius: 8px;
+    padding: 10px 20px;
+    margin: 5px 0;
+    width: 300px;
+    text-align: center;
+    transition: 0.2s;
+  }
+
+  .category-item:hover {
+    background-color: #e2e2e2;
+  }
+
+  .category-link {
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+  }
+
+  .category-link:hover {
+    color: #000;
+  }
+</style>
+
+<div class="categories-container">
+  {% for category in categories %}
+    <div class="category-item">
+      <a href="{% url 'category_posts' category.pk %}" class="category-link">
+        {{ category.name }}
+      </a>
+    </div>
+  {% empty %}
+    <div class="category-item">Нет категорий.</div>
+  {% endfor %}
+</div>
+{% endblock %}

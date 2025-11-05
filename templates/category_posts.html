@@ -1,0 +1,36 @@
+{% extends 'flatpages/default.html' %}
+
+{% block content %}
+<title>Новости категории: {{ category.name }}</title>
+
+<h2>Новости категории: {{ category.name }}</h2>
+
+{% if user.is_authenticated %}
+  {% if user in category.subscribers.all %}
+    <p>✅ Вы подписаны на эту категорию</p>
+  {% else %}
+    <form method="post" action="{% url 'add_subscribe' category.pk %}">
+      {% csrf_token %}
+      <button type="submit">Подписаться</button>
+    </form>
+  {% endif %}
+{% else %}
+  <p><a href="{% url 'login' %}">Войдите</a>, чтобы подписаться.</p>
+{% endif %}
+
+<hr>
+
+{% if posts %}
+  {% for post in posts %}
+    <div>
+      <h3><a href="{% url 'post_detail' post.pk %}">{{ post.title }}</a></h3>
+      <p>{{ post.preview }}</p>
+      <small>Автор: {{ post.author }} | Дата: {{ post.date_time|date:"d.m.Y H:i" }}</small>
+    </div>
+    <hr>
+  {% endfor %}
+{% else %}
+  <p>Нет новостей в этой категории.</p>
+{% endif %}
+
+{% endblock %}

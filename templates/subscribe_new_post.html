@@ -1,0 +1,32 @@
+{% load tz %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    {% for key, value in post.CATEGORY_CHOICES %}
+    {% if key == post.post_type %}
+    <h2>
+        Здравствуй, {{ username }}.<br>
+        Новая {{ value|lower }} в твоём любимом разделе {{ category }}!
+    </h2>
+    {% endif %}
+    {% endfor %}<p>{{ post.text|truncatechars:50 }}</p>
+
+    <p>
+        Автор: {{ post.author }}<br>
+        Дата публикации: {{ post.date_time|localtime|date:"d.m.y H:i" }}
+    </p>
+
+    <a href="http://127.0.0.1:8000/posts/{{ post.id }}"
+        style="display:inline-block;padding:10px 20px;background-color:#007bff;color:#fff;text-decoration:none;border-radius:5px;">
+        Прочитать статью на сайте
+    </a>
+</body>
+
+</html>

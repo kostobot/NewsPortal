@@ -1,0 +1,66 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>{% block title %} {% endblock title %}</title>
+    <!-- Favicon-->
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
+</head>
+
+<body>
+    <!-- Responsive navbar-->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+        <div class="container">
+            <a class="navbar-brand" href="/posts/">Сатирические новости</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+                aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/posts/">Главная
+                            <span class="sr-only">страница</span>
+                        </a>
+                    </li>
+                    <!-- <li class="nav-item">
+                        <a class="nav-link" href="/about/">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/contacts/">Contact</a>
+                    </li> -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="/posts/search/">🔍️Поиск</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/posts/news/create/">➕Создать Новость</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/posts/articles/create/">➕Создать Статью</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/posts/categories/">🧭Категории новостей</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <!-- Page content-->
+                {% block content %}
+                <!-- Контент по умолчанию или пусто -->
+                {% endblock content %}
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
