@@ -5,36 +5,13 @@ from .models import Post, Author
 from django.template.loader import render_to_string
 from django.contrib.auth.models import User, Group
 from allauth.account.signals import email_confirmed, user_signed_up
+from .tasks import send_new_post_notifications
 
 
 @receiver(m2m_changed, sender=Post.category.through)
 def notify_users_new_post(sender, instance, action, **kwargs):
     if action == 'post_add':
-        categories = instance.category.all()
-
-        for category in categories:
-            subscribers = category.subscribers.all()
-
-            for user in subscribers:
-                if not user.email:
-                    continue
-
-                subject = f'Новый пост в категории: {category.name}'
-
-                preview_text = instance.text[:50] + ('...' if len(instance.text) > 50 else '')
-
-                text_content = f'Здравствуй, {user.username}!\nНовая статья в твоём любимом разделе {instance.title}\n\n{preview_text} !'
-
-                html_content = render_to_string('subscribe_new_post.html', {'post': instance, 'username': user.username, 'category': category.name})
-
-                email = EmailMultiAlternatives(
-                    subject=subject,
-                    body=text_content,
-                    from_email='kastetpsy@yandex.ru',
-                    to=[user.email],
-                )
-                email.attach_alternative(html_content, "text/html")
-                email.send()
+        send_new_post_notifications.delay(instance.id)
 
 
 @receiver(m2m_changed, sender=User.groups.through)

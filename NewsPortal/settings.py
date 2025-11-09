@@ -172,3 +172,9 @@ SITE_ID = 1
 
 APSCHEDULER_DATETIME_FORMAT = "N j, Y, f:s a"
 APSCHEDULER_RUN_NOW_TIMEOUT = 25
+
+CELERY_BROKER_URL = f"redis://:{os.environ.get('REDIS_CLOUD')}@redis-10218.c14.us-east-1-2.ec2.redns.redis-cloud.com:10218"
+CELERY_RESULT_BACKEND = f"redis://:{os.environ.get('REDIS_CLOUD')}@redis-10218.c14.us-east-1-2.ec2.redns.redis-cloud.com:10218"
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
